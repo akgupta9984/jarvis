@@ -1,7 +1,7 @@
 import webbrowser
 import speech_recognition as sr
-import os  
-
+import os
+from o_retrieve import search_internet  # Import the new search function
 
 def say(text):
     os.system(f"say {text}") 
@@ -30,11 +30,15 @@ if __name__ == '__main__':
         print('listening')
         query = take_command()
         sites = [["youtube","https://www.youtube.com"],["hotstar","https://www.hotstar.com"]]
+        
+        # Check for search command
+        if "search for" in query.lower():
+            search_query = query.lower().replace("search for", "").strip()
+            results = search_internet(search_query)  # Call the search function
+            say(results)  # Speak out the results
+            continue
+        
         for site in sites:
             if f"open {site[0]}".lower() in query.lower():
                 say(f"opening {site[0]} sir...")
                 webbrowser.open(site[1])
-
-            
-
-        
